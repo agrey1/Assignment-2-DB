@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `FootWearShop`.`Shoe` (
   `supplier_id` INT NOT NULL,
   `supplier_address_id` INT UNSIGNED NOT NULL,
   `supplier_supplier_info_id` INT NOT NULL,
+  `image_url` VARCHAR( 64 ) NOT NULL,
   PRIMARY KEY (`id`, `category_id`, `supplier_id`, `supplier_address_id`, `supplier_supplier_info_id`),
   INDEX `fk_Shoe_Category1_idx` (`category_id` ASC),
   CONSTRAINT `fk_Shoe_Category1`
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `FootWearShop`.`User` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
-  `dob` DATE NOT NULL,
+  `dob` DATE NULL,
   `role_id` INT UNSIGNED NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `user_Info_id` INT UNSIGNED NOT NULL,
@@ -324,6 +325,10 @@ INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'staff', 'Staff perform duties such as tracking stock.');
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'manager', 'Managers are responsible for the staff.');
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'admin', 'Administrators have full access.');
+
+--Password for the admin user: test
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `agegroup`, `email_address`) VALUES (NULL, '', '', '', 'admin@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '4', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', CURRENT_TIMESTAMP);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
