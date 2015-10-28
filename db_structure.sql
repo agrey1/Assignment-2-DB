@@ -326,9 +326,14 @@ INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'manager', 'Managers are responsible for the staff.');
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'admin', 'Administrators have full access.');
 
---Password for the admin user: test
 INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `agegroup`, `email_address`) VALUES (NULL, '', '', '', 'admin@test.com');
 INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '4', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', CURRENT_TIMESTAMP);
+
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `agegroup`, `email_address`) VALUES (NULL, '', '', '', 'manager@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '3', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', CURRENT_TIMESTAMP);
+
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `agegroup`, `email_address`) VALUES (NULL, '', '', '', 'staff@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '2', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', CURRENT_TIMESTAMP);
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
