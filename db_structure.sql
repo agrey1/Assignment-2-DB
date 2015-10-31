@@ -29,7 +29,7 @@ CREATE TABLE `User` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `email_address` varchar(45) NOT NULL,
     `password` varchar(255) NOT NULL,
-    `date_registered` datetime(6) NOT NULL,
+    `date_registered` datetime NOT NULL,
     `role_id` integer NOT NULL
 )
 ;
@@ -122,8 +122,8 @@ CREATE TABLE `Order_shoe` (
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `shoe_id_refs_id_fcfea269` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 CREATE TABLE `Order` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `date_placed` datetime(6) NOT NULL,
-    `date_dispatched` datetime(6),
+    `date_placed` datetime NOT NULL,
+    `date_dispatched` datetime,
     `status` varchar(45) NOT NULL,
     `user_id` integer NOT NULL,
     `delivery_id` integer NOT NULL
@@ -138,13 +138,13 @@ INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'manager', 'Managers are responsible for the staff.');
 INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'admin', 'Administrators have full access.');
 
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'admin@test.com');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_info_id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'admin@test.com');
 INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '4', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', CURRENT_TIMESTAMP);
 
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'manager@test.com');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_info_id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'manager@test.com');
 INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '3', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', CURRENT_TIMESTAMP);
 
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'staff@test.com');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_info_id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'staff@test.com');
 INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '2', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', CURRENT_TIMESTAMP);
 
 COMMIT;
