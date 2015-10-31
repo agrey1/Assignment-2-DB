@@ -133,4 +133,18 @@ ALTER TABLE `Order` ADD CONSTRAINT `user_id_refs_id_47d23500` FOREIGN KEY (`user
 ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `order_id_refs_id_0b70d3b7` FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
 
+INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'customer', 'Customers can order items from the store.');
+INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'staff', 'Staff perform duties such as tracking stock.');
+INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'manager', 'Managers are responsible for the staff.');
+INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'admin', 'Administrators have full access.');
+
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'admin@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '4', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', CURRENT_TIMESTAMP);
+
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'manager@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '3', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', CURRENT_TIMESTAMP);
+
+INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'staff@test.com');
+INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '2', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', CURRENT_TIMESTAMP);
+
 COMMIT;
