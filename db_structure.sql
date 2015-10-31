@@ -1,339 +1,136 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- Schema FootWearShop
--- -----------------------------------------------------
--- Footwear online store.
-
--- -----------------------------------------------------
--- Schema FootWearShop
---
--- Footwear online store.
--- -----------------------------------------------------
+BEGIN;
 CREATE SCHEMA IF NOT EXISTS `FootWearShop` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `FootWearShop` ;
 
--- -----------------------------------------------------
--- Table `FootWearShop`.`Category`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Category` ;
+CREATE TABLE `Address` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `first_line` varchar(45) NOT NULL,
+    `second_line` varchar(45) NOT NULL,
+    `city` varchar(45) NOT NULL,
+    `postcode` varchar(45) NOT NULL,
+    `country` varchar(45) NOT NULL
+)
+;
+CREATE TABLE `Role` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `role_name` varchar(1) NOT NULL,
+    `role_description` varchar(255)
+)
+;
+CREATE TABLE `User_address` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `user_id` integer NOT NULL,
+    `address_id` integer NOT NULL,
+    UNIQUE (`user_id`, `address_id`)
+)
+;
+ALTER TABLE `User_address` ADD CONSTRAINT `address_id_refs_id_898682bb` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
+CREATE TABLE `User` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `email_address` varchar(45) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `date_registered` datetime(6) NOT NULL,
+    `role_id` integer NOT NULL
+)
+;
+ALTER TABLE `User` ADD CONSTRAINT `role_id_refs_id_fc5add86` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`);
+ALTER TABLE `User_address` ADD CONSTRAINT `user_id_refs_id_4e81fd01` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+CREATE TABLE `UserInfo` (
+    `user_info_id` integer NOT NULL PRIMARY KEY,
+    `gender` varchar(1) NOT NULL,
+    `nationality` varchar(45) NOT NULL,
+    `first_name` varchar(45) NOT NULL,
+    `last_name` varchar(45) NOT NULL,
+    `dob` date
+)
+;
+ALTER TABLE `UserInfo` ADD CONSTRAINT `user_info_id_refs_id_88493ec0` FOREIGN KEY (`user_info_id`) REFERENCES `User` (`id`);
+CREATE TABLE `Supplier` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `supplier_name` varchar(45) NOT NULL,
+    `address_id` integer NOT NULL UNIQUE,
+    `phonenumber` varchar(45) NOT NULL,
+    `email` varchar(45) NOT NULL
+)
+;
+ALTER TABLE `Supplier` ADD CONSTRAINT `address_id_refs_id_b83469c5` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
+CREATE TABLE `Brand` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `brand_name` varchar(45) NOT NULL,
+    `reputation` varchar(23) NOT NULL
+)
+;
+CREATE TABLE `Category_brand` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `category_id` integer NOT NULL,
+    `brand_id` integer NOT NULL,
+    UNIQUE (`category_id`, `brand_id`)
+)
+;
+ALTER TABLE `Category_brand` ADD CONSTRAINT `brand_id_refs_id_98411ed8` FOREIGN KEY (`brand_id`) REFERENCES `Brand` (`id`);
+CREATE TABLE `Category` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `category_name` varchar(45) NOT NULL,
+    `season` varchar(27) NOT NULL
+)
+;
+ALTER TABLE `Category_brand` ADD CONSTRAINT `category_id_refs_id_1b5ecc2a` FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`);
+CREATE TABLE `Shoe_category` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `shoe_id` integer NOT NULL,
+    `category_id` integer NOT NULL,
+    UNIQUE (`shoe_id`, `category_id`)
+)
+;
+ALTER TABLE `Shoe_category` ADD CONSTRAINT `category_id_refs_id_52531bda` FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`);
+CREATE TABLE `Shoe_supplier` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `shoe_id` integer NOT NULL,
+    `supplier_id` integer NOT NULL,
+    UNIQUE (`shoe_id`, `supplier_id`)
+)
+;
+ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `supplier_id_refs_id_4673cd7f` FOREIGN KEY (`supplier_id`) REFERENCES `Supplier` (`id`);
+CREATE TABLE `Shoe` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `shoe_name` varchar(45) NOT NULL,
+    `size` integer NOT NULL,
+    `color` varchar(45) NOT NULL,
+    `quantity` integer NOT NULL,
+    `price` numeric(7, 2) NOT NULL,
+    `image_url` varchar(64) NOT NULL
+)
+;
+ALTER TABLE `Shoe_category` ADD CONSTRAINT `shoe_id_refs_id_86e0cd4b` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
+ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `shoe_id_refs_id_6e8ba624` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
+CREATE TABLE `Delivery` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `tracking_number` integer NOT NULL UNIQUE,
+    `delivery_type` varchar(45) NOT NULL,
+    `delivery_cost` varchar(45) NOT NULL,
+    `address_id` integer NOT NULL
+)
+;
+ALTER TABLE `Delivery` ADD CONSTRAINT `address_id_refs_id_ca46d7c7` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
+CREATE TABLE `Order_shoe` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `order_id` integer NOT NULL,
+    `shoe_id` integer NOT NULL,
+    UNIQUE (`order_id`, `shoe_id`)
+)
+;
+ALTER TABLE `Order_shoe` ADD CONSTRAINT `shoe_id_refs_id_fcfea269` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
+CREATE TABLE `Order` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `date_placed` datetime(6) NOT NULL,
+    `date_dispatched` datetime(6),
+    `status` varchar(45) NOT NULL,
+    `user_id` integer NOT NULL,
+    `delivery_id` integer NOT NULL
+)
+;
+ALTER TABLE `Order` ADD CONSTRAINT `user_id_refs_id_47d23500` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
+ALTER TABLE `Order_shoe` ADD CONSTRAINT `order_id_refs_id_0b70d3b7` FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
 
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Category` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `category_name` VARCHAR(45) NOT NULL,
-  `season` SET('winter','summer','autumn','spring') NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Shoe`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Shoe` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Shoe` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `shoe_name` VARCHAR(45) NOT NULL,
-  `size` TINYINT NOT NULL,
-  `color` VARCHAR(45) NOT NULL,
-  `quantity` INT UNSIGNED NOT NULL,
-  `price` DECIMAL(7,2) UNSIGNED NOT NULL,
-  `category_id` INT UNSIGNED NOT NULL,
-  `supplier_id` INT NOT NULL,
-  `supplier_address_id` INT UNSIGNED NOT NULL,
-  `supplier_supplier_info_id` INT NOT NULL,
-  `image_url` VARCHAR( 64 ) NOT NULL,
-  PRIMARY KEY (`id`, `category_id`, `supplier_id`, `supplier_address_id`, `supplier_supplier_info_id`),
-  INDEX `fk_Shoe_Category1_idx` (`category_id` ASC),
-  CONSTRAINT `fk_Shoe_Category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `FootWearShop`.`Category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Brand`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Brand` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Brand` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `brand_name` VARCHAR(45) NOT NULL,
-  `reputation` SET('Unknown','Low', 'Medium', 'High') NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Brand_has_Category`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Brand_has_Category` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Brand_has_Category` (
-  `brand_id` INT UNSIGNED NOT NULL,
-  `category_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`brand_id`, `category_id`),
-  INDEX `fk_Brand_has_Category_Category1_idx` (`category_id` ASC),
-  INDEX `fk_Brand_has_Category_Brand1_idx` (`brand_id` ASC),
-  CONSTRAINT `fk_Brand_has_Category_Brand1`
-    FOREIGN KEY (`brand_id`)
-    REFERENCES `FootWearShop`.`Brand` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Brand_has_Category_Category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `FootWearShop`.`Category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Role`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Role` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Role` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `role_name` SET('customer', 'staff', 'manager', 'admin') NOT NULL,
-  `role_description` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`User_Info`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`User_Info` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`User_Info` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `gender` CHAR(1) NOT NULL,
-  `nationality` VARCHAR(45) NOT NULL,
-  `email_address` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`User`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`User` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`User` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `first_name` VARCHAR(45) NOT NULL,
-  `last_name` VARCHAR(45) NOT NULL,
-  `dob` DATE NULL,
-  `role_id` INT UNSIGNED NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `user_Info_id` INT UNSIGNED NOT NULL,
-  `date_registered` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`, `user_Info_id`, `role_id`),
-  INDEX `fk_User_Role1_idx` (`role_id` ASC),
-  INDEX `fk_User_User_Info1_idx` (`user_Info_id` ASC),
-  CONSTRAINT `fk_User_Role1`
-    FOREIGN KEY (`role_id`)
-    REFERENCES `FootWearShop`.`Role` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_User_Info1`
-    FOREIGN KEY (`user_Info_id`)
-    REFERENCES `FootWearShop`.`User_Info` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Address`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Address` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Address` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `first_line` VARCHAR(45) NOT NULL,
-  `second_line` VARCHAR(45) NOT NULL,
-  `city` VARCHAR(45) NOT NULL,
-  `postcode` VARCHAR(45) NOT NULL,
-  `country` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Delivery`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Delivery` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Delivery` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `tracking_number` INT NOT NULL,
-  `delivery_type` VARCHAR(45) NOT NULL,
-  `delivery_cost` VARCHAR(45) NOT NULL,
-  `address_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`, `address_id`),
-  INDEX `fk_Delivery_Address1_idx` (`address_id` ASC),
-  UNIQUE INDEX `tracking_number_UNIQUE` (`tracking_number` ASC),
-  CONSTRAINT `fk_Delivery_Address1`
-    FOREIGN KEY (`address_id`)
-    REFERENCES `FootWearShop`.`Address` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Order`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Order` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Order` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `date_placed` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_dispatched` TIMESTAMP NULL,
-  `status` VARCHAR(45) NOT NULL,
-  `total_cost` DECIMAL(7,2) NOT NULL,
-  `user_id` INT UNSIGNED NOT NULL,
-  `delivery_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`, `user_id`, `delivery_id`),
-  INDEX `fk_Order_User1_idx` (`user_id` ASC),
-  INDEX `fk_Order_Delivery1_idx` (`delivery_id` ASC),
-  CONSTRAINT `fk_Order_User1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `FootWearShop`.`User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Order_Delivery1`
-    FOREIGN KEY (`delivery_id`)
-    REFERENCES `FootWearShop`.`Delivery` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Item_Order`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Item_Order` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Item_Order` (
-  `order_id` INT UNSIGNED NOT NULL,
-  `shoe_id` INT UNSIGNED NOT NULL,
-  `shoe_category_id` INT UNSIGNED NOT NULL,
-  `item_quantity` SMALLINT UNSIGNED NOT NULL,
-  PRIMARY KEY (`order_id`, `shoe_id`, `shoe_category_id`),
-  INDEX `fk_Order_has_Shoe_Shoe1_idx` (`shoe_id` ASC, `shoe_category_id` ASC),
-  INDEX `fk_Order_has_Shoe_Order1_idx` (`order_id` ASC),
-  CONSTRAINT `fk_Order_has_Shoe_Order1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `FootWearShop`.`Order` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Order_has_Shoe_Shoe1`
-    FOREIGN KEY (`shoe_id` , `shoe_category_id`)
-    REFERENCES `FootWearShop`.`Shoe` (`id` , `category_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Supplier`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Supplier` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Supplier` (
-  `id` INT NOT NULL,
-  `supplier_name` VARCHAR(45) NOT NULL,
-  `address_id` INT UNSIGNED NOT NULL,
-  `company_phonenumber` VARCHAR(45) NOT NULL,
-  `contact_number` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`, `address_id`),
-  INDEX `fk_Supplier_Address1_idx` (`address_id` ASC),
-  CONSTRAINT `fk_Supplier_Address1`
-    FOREIGN KEY (`address_id`)
-    REFERENCES `FootWearShop`.`Address` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`Shoe_has_Supplier`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`Shoe_has_Supplier` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`Shoe_has_Supplier` (
-  `shoe_id` INT UNSIGNED NOT NULL,
-  `shoe_category_id` INT UNSIGNED NOT NULL,
-  `shoe_supplier_id` INT NOT NULL,
-  `shoe_supplier_address_id` INT UNSIGNED NOT NULL,
-  `shoe_supplier_supplier_info_id` INT NOT NULL,
-  `supplier_id` INT NOT NULL,
-  `supplier_address_id` INT UNSIGNED NOT NULL,
-  `supplier_supplier_info_id` INT NOT NULL,
-  PRIMARY KEY (`shoe_id`, `shoe_category_id`, `shoe_supplier_id`, `shoe_supplier_address_id`, `shoe_supplier_supplier_info_id`, `supplier_id`, `supplier_address_id`, `supplier_supplier_info_id`),
-  INDEX `fk_Shoe_has_Supplier_Supplier1_idx` (`supplier_id` ASC, `supplier_address_id` ASC, `supplier_supplier_info_id` ASC),
-  INDEX `fk_Shoe_has_Supplier_Shoe1_idx` (`shoe_id` ASC, `shoe_category_id` ASC, `shoe_supplier_id` ASC, `shoe_supplier_address_id` ASC, `shoe_supplier_supplier_info_id` ASC),
-  CONSTRAINT `fk_Shoe_has_Supplier_Shoe1`
-    FOREIGN KEY (`shoe_id` , `shoe_category_id` , `shoe_supplier_id` , `shoe_supplier_address_id` , `shoe_supplier_supplier_info_id`)
-    REFERENCES `FootWearShop`.`Shoe` (`id` , `category_id` , `supplier_id` , `supplier_address_id` , `supplier_supplier_info_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Shoe_has_Supplier_Supplier1`
-    FOREIGN KEY (`supplier_id` , `supplier_address_id`)
-    REFERENCES `FootWearShop`.`Supplier` (`id` , `address_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `FootWearShop`.`User_has_Address`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `FootWearShop`.`User_has_Address` ;
-
-CREATE TABLE IF NOT EXISTS `FootWearShop`.`User_has_Address` (
-  `User_id` INT UNSIGNED NOT NULL,
-  `User_user_Info_id` INT UNSIGNED NOT NULL,
-  `User_role_id` INT UNSIGNED NOT NULL,
-  `Address_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`User_id`, `User_user_Info_id`, `User_role_id`, `Address_id`),
-  INDEX `fk_User_has_Address_Address1_idx` (`Address_id` ASC),
-  INDEX `fk_User_has_Address_User1_idx` (`User_id` ASC, `User_user_Info_id` ASC, `User_role_id` ASC),
-  CONSTRAINT `fk_User_has_Address_User1`
-    FOREIGN KEY (`User_id` , `User_user_Info_id` , `User_role_id`)
-    REFERENCES `FootWearShop`.`User` (`id` , `user_Info_id` , `role_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_has_Address_Address1`
-    FOREIGN KEY (`Address_id`)
-    REFERENCES `FootWearShop`.`Address` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
--- Feel free to change these descriptions!
-INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'customer', 'Customers can order items from the store.');
-INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'staff', 'Staff perform duties such as tracking stock.');
-INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'manager', 'Managers are responsible for the staff.');
-INSERT INTO `FootWearShop`.`Role` (`id`, `role_name`, `role_description`) VALUES (NULL, 'admin', 'Administrators have full access.');
-
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'admin@test.com');
-INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '4', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', CURRENT_TIMESTAMP);
-
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'manager@test.com');
-INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '3', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', CURRENT_TIMESTAMP);
-
-INSERT INTO `FootWearShop`.`User_Info` (`id`, `gender`, `nationality`, `email_address`) VALUES (NULL, '', '', 'staff@test.com');
-INSERT INTO `FootWearShop`.`User` (`id`, `first_name`, `last_name`, `dob`, `role_id`, `password`, `user_Info_id`, `date_registered`) VALUES (NULL, '', '', NULL, '2', '$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', CURRENT_TIMESTAMP);
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+COMMIT;
