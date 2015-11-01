@@ -1,4 +1,5 @@
 BEGIN;
+DROP SCHEMA FootWearShop;
 CREATE SCHEMA IF NOT EXISTS `FootWearShop` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `FootWearShop` ;
 
@@ -36,7 +37,7 @@ CREATE TABLE `User` (
 ALTER TABLE `User` ADD CONSTRAINT `role_id_refs_id_fc5add86` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`);
 ALTER TABLE `User_address` ADD CONSTRAINT `user_id_refs_id_4e81fd01` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 CREATE TABLE `UserInfo` (
-    `user_info_id` integer NOT NULL PRIMARY KEY,
+    `user_id` integer NOT NULL PRIMARY KEY,
     `gender` varchar(1) NOT NULL,
     `nationality` varchar(45) NOT NULL,
     `first_name` varchar(45) NOT NULL,
@@ -44,7 +45,7 @@ CREATE TABLE `UserInfo` (
     `dob` date
 )
 ;
-ALTER TABLE `UserInfo` ADD CONSTRAINT `user_info_id_refs_id_88493ec0` FOREIGN KEY (`user_info_id`) REFERENCES `User` (`id`);
+ALTER TABLE `UserInfo` ADD CONSTRAINT `user_id_refs_id_88493ec0` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 CREATE TABLE `Supplier` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `supplier_name` varchar(45) NOT NULL,
@@ -132,5 +133,31 @@ CREATE TABLE `Order` (
 ALTER TABLE `Order` ADD CONSTRAINT `user_id_refs_id_47d23500` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `order_id_refs_id_0b70d3b7` FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
+
+
+
+
+
+
+
+
+INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('C', 'Customers can order items from the store.');
+INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('S', 'Staff perform duties such as tracking stock.');
+INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('M', 'Managers are responsible for the staff.');
+INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('A', 'Administrators have full access.');
+
+
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (1, 'M', 'British', 'Admin', 'Admin');
+
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (2, 'M', 'British', 'Manager', 'Manager');
+
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('staff@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (3, 'M', 'British', 'Staff', 'Staff');
+
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('customer@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (4, 'M', 'British', 'Customer', 'Customer');
+
 
 COMMIT;
