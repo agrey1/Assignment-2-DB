@@ -3,49 +3,6 @@ DROP SCHEMA FootWearShop;
 CREATE SCHEMA IF NOT EXISTS `FootWearShop` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `FootWearShop` ;
 
-CREATE TABLE `Address` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `first_line` varchar(45) NOT NULL,
-    `second_line` varchar(45) NOT NULL,
-    `city` varchar(45) NOT NULL,
-    `postcode` varchar(45) NOT NULL,
-    `country` varchar(45) NOT NULL
-)
-;
-CREATE TABLE `Role` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `role_name` varchar(1) NOT NULL,
-    `role_description` varchar(255)
-)
-;
-CREATE TABLE `User_address` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `user_id` integer NOT NULL,
-    `address_id` integer NOT NULL,
-    UNIQUE (`user_id`, `address_id`)
-)
-;
-ALTER TABLE `User_address` ADD CONSTRAINT `address_id_refs_id_898682bb` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
-CREATE TABLE `User` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `email_address` varchar(45) NOT NULL,
-    `password` varchar(255) NOT NULL,
-    `date_registered` datetime(6) NOT NULL,
-    `role_id` integer NOT NULL
-)
-;
-ALTER TABLE `User` ADD CONSTRAINT `role_id_refs_id_fc5add86` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`);
-ALTER TABLE `User_address` ADD CONSTRAINT `user_id_refs_id_4e81fd01` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
-CREATE TABLE `UserInfo` (
-    `user_id` integer NOT NULL PRIMARY KEY,
-    `gender` varchar(1) NOT NULL,
-    `nationality` varchar(45) NOT NULL,
-    `first_name` varchar(45) NOT NULL,
-    `last_name` varchar(45) NOT NULL,
-    `dob` date
-)
-;
-ALTER TABLE `UserInfo` ADD CONSTRAINT `user_id_refs_id_88493ec0` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 CREATE TABLE `Supplier` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `supplier_name` varchar(45) NOT NULL,
@@ -133,10 +90,49 @@ CREATE TABLE `Order` (
 ALTER TABLE `Order` ADD CONSTRAINT `user_id_refs_id_47d23500` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `order_id_refs_id_0b70d3b7` FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
-
-
-
-
+CREATE TABLE `Address` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `first_line` varchar(45) NOT NULL,
+    `second_line` varchar(45) NOT NULL,
+    `city` varchar(45) NOT NULL,
+    `postcode` varchar(45) NOT NULL,
+    `country` varchar(45) NOT NULL
+)
+;
+CREATE TABLE `Role` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `role_name` varchar(1) NOT NULL,
+    `role_description` varchar(255)
+)
+;
+CREATE TABLE `User` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `email_address` varchar(45) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `date_registered` date NOT NULL,
+    `role_id` integer NOT NULL
+)
+;
+ALTER TABLE `User` ADD CONSTRAINT `role_id_refs_id_fc5add86` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`);
+CREATE TABLE `UserInfo_address` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `userinfo_id` integer NOT NULL,
+    `address_id` integer NOT NULL,
+    UNIQUE (`userinfo_id`, `address_id`)
+)
+;
+ALTER TABLE `UserInfo_address` ADD CONSTRAINT `address_id_refs_id_6fb9d1ac` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
+CREATE TABLE `UserInfo` (
+    `user_id` integer NOT NULL PRIMARY KEY,
+    `gender` varchar(1) NOT NULL,
+    `nationality` varchar(45) NOT NULL,
+    `first_name` varchar(45) NOT NULL,
+    `last_name` varchar(45) NOT NULL,
+    `dob` date
+)
+;
+ALTER TABLE `UserInfo` ADD CONSTRAINT `user_id_refs_id_88493ec0` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `UserInfo_address` ADD CONSTRAINT `userinfo_id_refs_user_id_860a688e` FOREIGN KEY (`userinfo_id`) REFERENCES `UserInfo` (`user_id`);
 
 
 
