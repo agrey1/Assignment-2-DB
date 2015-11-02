@@ -7,7 +7,7 @@ USE `FootWearShop` ;
 CREATE TABLE `Address` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `first_line` varchar(45) NOT NULL,
-    `second_line` varchar(45) NOT NULL,
+    `second_line` varchar(45) NULL,
     `city` varchar(45) NOT NULL,
     `postcode` varchar(45) NOT NULL,
     `country` varchar(45) NOT NULL
