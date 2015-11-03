@@ -3,15 +3,6 @@ DROP SCHEMA IF EXISTS FootWearShop;
 CREATE SCHEMA IF NOT EXISTS `FootWearShop` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
 USE `FootWearShop` ;
 
-CREATE TABLE `Address` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `first_line` varchar(45) NOT NULL,
-    `second_line` varchar(45) NOT NULL,
-    `city` varchar(45) NOT NULL,
-    `postcode` varchar(45) NOT NULL,
-    `country` varchar(45) NOT NULL
-)
-;
 CREATE TABLE `Role` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `role_name` varchar(1) NOT NULL,
@@ -20,21 +11,13 @@ CREATE TABLE `Role` (
 ;
 CREATE TABLE `User` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `email_address` varchar(45) NOT NULL,
+    `email_address` varchar(45) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL,
     `date_registered` date NOT NULL,
     `role_id` integer NOT NULL
 )
 ;
 ALTER TABLE `User` ADD CONSTRAINT `role_id_refs_id_fc5add86` FOREIGN KEY (`role_id`) REFERENCES `Role` (`id`);
-CREATE TABLE `UserInfo_address` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `userinfo_id` integer NOT NULL,
-    `address_id` integer NOT NULL,
-    UNIQUE (`userinfo_id`, `address_id`)
-)
-;
-ALTER TABLE `UserInfo_address` ADD CONSTRAINT `address_id_refs_id_6fb9d1ac` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
 CREATE TABLE `UserInfo` (
     `user_id` integer NOT NULL PRIMARY KEY,
     `gender` varchar(1) NOT NULL,
@@ -45,7 +28,17 @@ CREATE TABLE `UserInfo` (
 )
 ;
 ALTER TABLE `UserInfo` ADD CONSTRAINT `user_id_refs_id_88493ec0` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
-ALTER TABLE `UserInfo_address` ADD CONSTRAINT `userinfo_id_refs_user_id_860a688e` FOREIGN KEY (`userinfo_id`) REFERENCES `UserInfo` (`user_id`);
+CREATE TABLE `Address` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `first_line` varchar(45) NOT NULL,
+    `second_line` varchar(45) NOT NULL,
+    `city` varchar(45) NOT NULL,
+    `postcode` varchar(45) NOT NULL,
+    `country` varchar(45) NOT NULL,
+    `userinfo_id` integer
+)
+;
+ALTER TABLE `Address` ADD CONSTRAINT `userinfo_id_refs_user_id_11bc1a34` FOREIGN KEY (`userinfo_id`) REFERENCES `UserInfo` (`user_id`);
 CREATE TABLE `Supplier` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `supplier_name` varchar(45) NOT NULL,
@@ -76,14 +69,6 @@ CREATE TABLE `Category` (
 )
 ;
 ALTER TABLE `Category_brand` ADD CONSTRAINT `category_id_refs_id_1b5ecc2a` FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`);
-CREATE TABLE `Shoe_supplier` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `shoe_id` integer NOT NULL,
-    `supplier_id` integer NOT NULL,
-    UNIQUE (`shoe_id`, `supplier_id`)
-)
-;
-ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `supplier_id_refs_id_4673cd7f` FOREIGN KEY (`supplier_id`) REFERENCES `Supplier` (`id`);
 CREATE TABLE `Shoe_category` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `shoe_id` integer NOT NULL,
@@ -92,6 +77,14 @@ CREATE TABLE `Shoe_category` (
 )
 ;
 ALTER TABLE `Shoe_category` ADD CONSTRAINT `category_id_refs_id_52531bda` FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`);
+CREATE TABLE `Shoe_supplier` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `shoe_id` integer NOT NULL,
+    `supplier_id` integer NOT NULL,
+    UNIQUE (`shoe_id`, `supplier_id`)
+)
+;
+ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `supplier_id_refs_id_4673cd7f` FOREIGN KEY (`supplier_id`) REFERENCES `Supplier` (`id`);
 CREATE TABLE `Shoe` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `shoe_name` varchar(45) NOT NULL,
@@ -102,8 +95,8 @@ CREATE TABLE `Shoe` (
     `image_url` varchar(64) NOT NULL
 )
 ;
-ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `shoe_id_refs_id_6e8ba624` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 ALTER TABLE `Shoe_category` ADD CONSTRAINT `shoe_id_refs_id_86e0cd4b` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
+ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `shoe_id_refs_id_6e8ba624` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 CREATE TABLE `Delivery` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `tracking_number` integer NOT NULL UNIQUE,
@@ -123,15 +116,15 @@ CREATE TABLE `Order_shoe` (
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `shoe_id_refs_id_fcfea269` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 CREATE TABLE `Order` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `date_placed` date NOT NULL,
-    `date_dispatched` date,
+    `date_placed` datetime(6) NOT NULL,
+    `date_dispatched` datetime(6),
     `status` varchar(45) NOT NULL,
     `user_id` integer NOT NULL,
     `delivery_id` integer NOT NULL
 )
 ;
-ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
 ALTER TABLE `Order` ADD CONSTRAINT `user_id_refs_id_47d23500` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `Order` ADD CONSTRAINT `delivery_id_refs_id_ec47a00e` FOREIGN KEY (`delivery_id`) REFERENCES `Delivery` (`id`);
 ALTER TABLE `Order_shoe` ADD CONSTRAINT `order_id_refs_id_0b70d3b7` FOREIGN KEY (`order_id`) REFERENCES `Order` (`id`);
 
 
@@ -143,7 +136,7 @@ INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('M',
 INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('A', 'Administrators have full access.');
 
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('hash@test.com','$2y$10$WsTw7eLJZYeWvulNUXyWsOev1U31KLXcWBPayLEASQOf2UEsIP1T6', '4');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (1, 'M', 'British', 'Admin', 'Admin');
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2');
