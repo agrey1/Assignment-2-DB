@@ -136,7 +136,7 @@ INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('M',
 INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('A', 'Administrators have full access.');
 
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('hash@test.com','$2y$10$WsTw7eLJZYeWvulNUXyWsOev1U31KLXcWBPayLEASQOf2UEsIP1T6', '4');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (1, 'M', 'British', 'Admin', 'Admin');
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3');
