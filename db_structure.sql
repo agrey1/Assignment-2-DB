@@ -136,16 +136,16 @@ INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('M',
 INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('A', 'Administrators have full access.');
 
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4', '2015-11-27');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (1, 'M', 'British', 'Admin', 'Admin');
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', '2015-11-25');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (2, 'M', 'British', 'Manager', 'Manager');
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('staff@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('staff@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', '2016-11-27');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (3, 'M', 'British', 'Staff', 'Staff');
 
-INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`) VALUES ('customer@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1');
+INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('customer@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', '2015-12-27');
 INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (4, 'M', 'British', 'Customer', 'Customer');
 
 
