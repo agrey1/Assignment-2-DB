@@ -92,16 +92,16 @@ CREATE TABLE `Shoe` (
     `color` varchar(45) NOT NULL,
     `quantity` integer NOT NULL,
     `price` numeric(7, 2) NOT NULL,
-    `image_url` varchar(64) NOT NULL
+    `image_url` varchar(256) NOT NULL
 )
 ;
 ALTER TABLE `Shoe_category` ADD CONSTRAINT `shoe_id_refs_id_86e0cd4b` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 ALTER TABLE `Shoe_supplier` ADD CONSTRAINT `shoe_id_refs_id_6e8ba624` FOREIGN KEY (`shoe_id`) REFERENCES `Shoe` (`id`);
 CREATE TABLE `Delivery` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `tracking_number` integer NOT NULL UNIQUE,
+    `tracking_number` varchar(32) NOT NULL,
     `delivery_type` varchar(45) NOT NULL,
-    `delivery_cost` varchar(45) NOT NULL,
+    `delivery_cost` decimal(10, 2) NOT NULL,
     `address_id` integer NOT NULL
 )
 ;
