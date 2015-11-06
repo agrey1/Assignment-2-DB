@@ -33,10 +33,10 @@ INSERT INTO  `FootWearShop`.`Delivery` (
 `tracking_number` ,
 `delivery_type` ,
 `delivery_cost` ,
-LAST_INSERT_ID()
+`address_id`
 )
 VALUES (
-NULL ,  '93AJ2-1',  'Express',  '4.99',  '1'
+NULL ,  '93AJ2-1',  'Express',  '4.99',  LAST_INSERT_ID()
 );
 
 INSERT INTO  `FootWearShop`.`Order` (
@@ -45,10 +45,10 @@ INSERT INTO  `FootWearShop`.`Order` (
 `date_dispatched` ,
 `status` ,
 `user_id` ,
-LAST_INSERT_ID()
+`delivery_id`
 )
 VALUES (
-NULL ,  '2015-11-18 13:17:09',  '2015-11-18 15:31:05',  'Out for Delivery',  '1',  '3'
+NULL ,  '2015-11-18 13:17:09',  '2015-11-18 15:31:05',  'Out for Delivery',  '1',  LAST_INSERT_ID()
 );
 
 INSERT INTO  `FootWearShop`.`Shoe` (
@@ -80,10 +80,10 @@ NULL ,  '5 MakeShoe Road',  '',  'Dundee',  'DD4 BBB',  'United Kingdom', NULL
 INSERT INTO  `FootWearShop`.`Supplier` (
 `id` ,
 `supplier_name` ,
-LAST_INSERT_ID() ,
+`address_id`,
 `phonenumber` ,
 `email`
 )
 VALUES (
-NULL ,  'Shoe Manufacturing',  '1',  '01382111111',  'contact@shoemanufacturing.co.uk'
+NULL ,  'Shoe Manufacturing',  LAST_INSERT_ID(),  '01382111111',  'contact@shoemanufacturing.co.uk'
 );
