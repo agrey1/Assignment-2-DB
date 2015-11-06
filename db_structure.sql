@@ -50,8 +50,7 @@ CREATE TABLE `Supplier` (
 ALTER TABLE `Supplier` ADD CONSTRAINT `address_id_refs_id_b83469c5` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
 CREATE TABLE `Brand` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `brand_name` varchar(45) NOT NULL,
-    `reputation` varchar(23) NOT NULL
+    `brand_name` varchar(45) NOT NULL
 )
 ;
 CREATE TABLE `Category_brand` (
