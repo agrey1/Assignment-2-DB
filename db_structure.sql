@@ -136,16 +136,19 @@ INSERT INTO `FootWearShop`.`Role` (`role_name`, `role_description`) VALUES ('A',
 
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('admin@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '4', '2015-11-27');
-INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (1, 'M', 'British', 'Admin', 'Admin');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`, `dob`) VALUES (1, 'M', 'British', 'Admin', 'Admin', '1990-11-27');
+INSERT INTO Address (first_line, second_line, city, postcode, country, userinfo_id) VALUES ('1 Admin Road', '', 'Dundee', 'DD4AAA', 'United Kingdom', 1);
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('manager@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '3', '2015-11-25');
-INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (2, 'M', 'British', 'Manager', 'Manager');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`, `dob`) VALUES (2, 'M', 'British', 'Manager', 'Manager', '1990-11-27');
+INSERT INTO Address (first_line, second_line, city, postcode, country, userinfo_id) VALUES ('1 Manager Road', '', 'Dundee', 'DD4BBB', 'United Kingdom', 2);
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('staff@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '2', '2016-11-27');
-INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (3, 'M', 'British', 'Staff', 'Staff');
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`, `dob`) VALUES (3, 'M', 'British', 'Staff', 'Staff', '1990-11-27');
+INSERT INTO Address (first_line, second_line, city, postcode, country, userinfo_id) VALUES ('1 Staff Road', '', 'Dundee', 'DD4CCC', 'United Kingdom', 3);
 
 INSERT INTO `FootWearShop`.`User` (`email_address`, `password`, `role_id`, `date_registered`) VALUES ('customer@test.com','$2y$10$.bsUkjVZXQZbzbK2j3sM.eIxj7ZHcNTlx2imGHRsNZPyAmNBOTXk2', '1', '2015-12-27');
-INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`) VALUES (4, 'M', 'British', 'Customer', 'Customer');
-
+INSERT INTO `FootWearShop`.`UserInfo` (`user_id`, `gender`, `nationality`, `first_name`, `last_name`, `dob`) VALUES (4, 'M', 'British', 'Customer', 'Customer', '1990-11-27');
+INSERT INTO Address (first_line, second_line, city, postcode, country, userinfo_id) VALUES ('1 Customer Road', '', 'Dundee', 'DD4DDD', 'United Kingdom', 4);
 
 COMMIT;
